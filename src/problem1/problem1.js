@@ -33,9 +33,9 @@ rl.question("Enter an integer: ", (input) => {
   if (!Number.isInteger(numInput)) {
     console.log("Invalid input, not an integer");
   } else {
-    console.log("1. Using for loop: " + sum_to_n_a(numInput));
-    console.log("2. Using reduce() method: " + sum_to_n_b(numInput));
-    console.log("1. Using recursion: " + sum_to_n_c(numInput));
+    console.log("1. Result of using for loop: " + sum_to_n_a(numInput));
+    console.log("2. Result of using reduce() method: " + sum_to_n_b(numInput));
+    console.log("1. Result of using recursion: " + sum_to_n_c(numInput));
   }
   rl.close();
 });
