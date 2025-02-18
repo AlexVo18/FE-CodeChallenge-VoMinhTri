@@ -10,67 +10,88 @@ import {
   CommandList,
 } from "../ui/command";
 import { Currency } from "@/common/price";
-import { Check } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface IProps {
-  prices: Currency[];
-  chosen: Currency | null;
-  onChoose: React.Dispatch<React.SetStateAction<Currency | null>>;
+interface Props {
+  currencies: Currency[];
+  chosen: Currency;
+  onChoose: React.Dispatch<React.SetStateAction<Currency>>;
+  otherChosen: Currency;
 }
 
-const Select = ({ prices, chosen, onChoose }: IProps) => {
+const Select: React.FC<Props> = ({
+  currencies,
+  chosen,
+  onChoose,
+  otherChosen,
+}: Props) => {
   const [open, setOpen] = useState(false);
 
-  const chooseCurrency = () => {
+  const chooseCurrency = (value: string): void => {
     setOpen(false);
-    // onChoose();
+
+    onChoose(currencies.find((current) => current.currency === value)!);
   };
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild className="h-16 ">
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-full justify-between"
         >
-          {chosen && chosen.currency
-            ? prices.find((price) => price.currency === chosen.currency)
-                ?.currency
-            : "Choose a currency..."}
-          {/* <ChevronsUpDown className="opacity-50" /> */}
+          <div className="flex items-center gap-2">
+            <img
+              src={`../../public/tokens/${chosen.currency}.svg`}
+              alt={`${chosen}`}
+              className="w-8"
+            />
+            <span className="text-lg">
+              {chosen && chosen
+                ? currencies.find((price) => price.currency === chosen.currency)
+                    ?.currency
+                : "Choose a currency..."}
+            </span>
+          </div>
+
+          <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Choose a currency..." />
+          <CommandInput placeholder="Search for currency..." />
           <CommandList>
             <CommandEmpty>No currency found.</CommandEmpty>
             <CommandGroup>
-              {prices.map((price, index) => (
-                <CommandItem
-                  key={index}
-                  value={price.currency}
-                  onSelect={() => chooseCurrency()}
-                >
-                  <img
-                    src={`../../public/tokens/${price.currency}.svg`}
-                    alt={`${price.currency}`}
-                    className="w-6"
-                  />
-                  <span>{price.currency}</span>
+              {currencies
+                .filter(
+                  (currency) => currency.currency !== otherChosen.currency
+                )
+                .map((price) => (
+                  <CommandItem
+                    key={price.currency}
+                    value={price.currency}
+                    onSelect={(value) => chooseCurrency(value)}
+                  >
+                    <img
+                      src={`../../public/tokens/${price.currency}.svg`}
+                      alt={`${price.currency}`}
+                      className="w-6"
+                    />
+                    <span>{price.currency}</span>
 
-                  <Check
-                    className={cn(
-                      "ml-auto",
-                      chosen && chosen.currency === price.currency
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))}
+                    <Check
+                      className={cn(
+                        "ml-auto",
+                        chosen && chosen.currency === price.currency
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
             </CommandGroup>
           </CommandList>
         </Command>
