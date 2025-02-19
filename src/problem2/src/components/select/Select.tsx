@@ -16,14 +16,14 @@ import { cn } from "@/lib/utils";
 interface Props {
   currencies: Currency[];
   chosen: Currency;
-  onChoose: React.Dispatch<React.SetStateAction<Currency>>;
+  setChosen: React.Dispatch<React.SetStateAction<Currency>>;
   otherChosen: Currency;
 }
 
 const Select: React.FC<Props> = ({
   currencies,
   chosen,
-  onChoose,
+  setChosen,
   otherChosen,
 }: Props) => {
   const [open, setOpen] = useState(false);
@@ -31,7 +31,7 @@ const Select: React.FC<Props> = ({
   const chooseCurrency = (value: string): void => {
     setOpen(false);
 
-    onChoose(currencies.find((current) => current.currency === value)!);
+    setChosen(currencies.find((current) => current.currency === value)!);
   };
   return (
     <Popover open={open} onOpenChange={setOpen}>

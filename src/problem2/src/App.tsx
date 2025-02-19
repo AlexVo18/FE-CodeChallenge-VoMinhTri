@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Container from "./components/container/Container";
 import { Card, CardContent, CardHeader } from "./components/ui/card";
 import { Currency } from "./common/price";
@@ -25,9 +25,7 @@ function App() {
   });
   const [result, setResult] = useState<number>(0);
 
-  useEffect(() => {}, []);
-
-  const onSwap = () => {
+  const handleSwap = (): void => {
     const curr1 = currency1;
     setCurrency1(currency2);
     setCurrency2(curr1);
@@ -54,7 +52,7 @@ function App() {
                   currencies={currencies}
                   chosen={currency1}
                   otherChosen={currency2}
-                  onChoose={setCurrency1}
+                  setChosen={setCurrency1}
                 />
                 <div className="flex gap-1 mt-2 px-2 truncate">
                   1{" "}
@@ -73,7 +71,7 @@ function App() {
                     <ArrowRightLeft className="w-16 h-16 hover:text-blue-500" />
                   }
                   className="cursor-pointer"
-                  onClick={() => onSwap()}
+                  onClick={() => handleSwap()}
                   asChild
                 />
               </div>
@@ -84,7 +82,7 @@ function App() {
                   currencies={currencies}
                   chosen={currency2}
                   otherChosen={currency1}
-                  onChoose={setCurrency2}
+                  setChosen={setCurrency2}
                 />
                 <div className="flex gap-1 mt-2 px-2 truncate">
                   1{" "}
